@@ -16,7 +16,6 @@ public class Blog {
 
     private String title;
     private String content;
-    @CreationTimestamp
     private Date pubDate;
     @ManyToOne
     @JoinColumn
@@ -28,10 +27,9 @@ public class Blog {
     public Blog() {
     }
 
-    public Blog(User user,String title,String content) {
+    public Blog(String title,String content) {
         this.title = title;
         this.content = content;
-        this.user = user;
     }
 
     public int getId() {
