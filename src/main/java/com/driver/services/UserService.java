@@ -24,7 +24,10 @@ public class UserService {
      userRepository3.deleteById(userId);
     }
 
-    public User updateUser(Integer id, String password){
+    public User updateUser(Integer id, String password) throws Exception{
+        if(!userRepository3.findById(id).isPresent()){
+            throw new Exception();
+        }
         User oldId=userRepository3.findById(id).get();
         oldId.setId(id);
         oldId.setPassword(password);
