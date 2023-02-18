@@ -21,24 +21,22 @@ public class BlogService {
     @Autowired
     UserRepository userRepository1;
 
-    public Blog createAndReturnBlog(Integer userId, String title, String content)  {
+    public Blog createAndReturnBlog(Integer userId, String title, String content){
         //create a blog at the current time
 
-         User user=userRepository1.findById(userId).get();
-         Blog blog=new Blog();
-//
-        if(user != null) {blog.setUser(user);
+        Blog blog = new Blog();
+        User user = userRepository1.findById(userId).get();
+        if(user!=null){
+            blog.setUser(user);
             blog.setTitle(title);
             blog.setContent(content);
-            blog.setUser(user);
             blog.setPubDate(new Date());
-            List<Blog> blogList=user.getBlogList();
-            blogList.add(blog);
-            user.setBlogList(blogList);
+            List<Blog> blogsWritten = user.getBlogList();
+            blogsWritten.add(blog);
+            user.setBlogList(blogsWritten);
             userRepository1.save(user);
         }
-         return blog;
-
+        return blog;
     }
 
     public void deleteBlog(int blogId){

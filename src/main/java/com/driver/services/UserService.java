@@ -14,9 +14,9 @@ public class UserService {
     UserRepository userRepository3;
 
     public User createUser(String username, String password){
-     User user=new User(username,password);
-     userRepository3.save(user);
-     return  user;
+        User user = new User(username, password);
+        userRepository3.save(user);
+        return user;
     }
 
     public void deleteUser(int userId){
@@ -25,13 +25,11 @@ public class UserService {
     }
 
     public User updateUser(Integer id, String password) throws Exception{
-        if(!userRepository3.findById(id).isPresent()){
-            throw new Exception();
+        User user = userRepository3.findById(id).get();
+        if(user!=null){
+            user.setPassword(password);
+            userRepository3.save(user);
         }
-        User oldId=userRepository3.findById(id).get();
-        oldId.setId(id);
-        oldId.setPassword(password);
-        userRepository3.save(oldId);
-        return oldId;
+        return user;
     }
 }

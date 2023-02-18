@@ -15,20 +15,15 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
-    public Image addImage(Integer blogId, String description, String dimensions) throws Exception{
+    public Image addImage(Integer blogId, String description, String dimensions){
         //add an image to the blog
-        if(!blogRepository2.findById(blogId).isPresent()){
-            throw new Exception();
-        }
-        Blog blog=blogRepository2.findById(blogId).get();
-
-
         Image image = new Image();
+        Blog blog = blogRepository2.findById(blogId).get();
         image.setDescription(description);
         image.setDimensions(dimensions);
         image.setBlog(blog);
-        blog.getImageList().add(image);
         imageRepository2.save(image);
+        blogRepository2.save(blog);
         return image;
     }
 
@@ -39,17 +34,33 @@ public class ImageService {
 
     public int countImagesInScreen(Integer id, String screenDimensions) throws Exception {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
-        if(!imageRepository2.findById(id).isPresent()){
-            throw new Exception();
+        Image image = imageRepository2.findById(id).get();
+        String dimensions = image.getDimensions();
+
+        int i = 0;
+        for(;i<screenDimensions.length();i++){
+            if(screenDimensions.charAt(i)=='X'){
+                break;
+            }
         }
-        Image image=imageRepository2.findById(id).get();
-        String imageDimension = image.getDimensions();
-        String first[] = imageDimension.split("X");
-        String second[] = screenDimensions.split("X");
-        return Integer.parseInt(second[0])*Integer.parseInt(second[1])/(Integer.parseInt(first[0])*Integer.parseInt(first[1]));
+
+        int j = 0;
+        for(;j<dimensions.length();j++){
+            if(dimensions.charAt(j)=='X'){
+                break;
+            }
+        }
+
+        int lenBigImg = Integer.parseInt(screenDimensions.substring(0,i));
+        int widBigImg = Integer.parseInt(screenDimensions.substring(i+1));
+        int lenSmallImg = Integer.parseInt(dimensions.substring(0,j));
+        int widSmallImg = Integer.parseInt(dimensions.substring(j+1));
+
+        int dim1 = lenBigImg/lenSmallImg;
+        int dim2 = widBigImg/widSmallImg;
+
+        return dim1*dim2;
 
     }
-    public Image findById(int id) {
-        return imageRepository2.findById(id).get();
-    }
+
 }

@@ -3,6 +3,7 @@ package com.driver.models;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Blog {
     private User user;
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private List<Image> imageList;
+    private List<Image> imageList= new ArrayList<>();
 
     public Blog() {
     }
