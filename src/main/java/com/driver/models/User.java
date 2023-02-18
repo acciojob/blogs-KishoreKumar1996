@@ -2,8 +2,6 @@ package com.driver.models;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Entity
