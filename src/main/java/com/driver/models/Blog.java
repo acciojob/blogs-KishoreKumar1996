@@ -8,27 +8,29 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name ="Blog")
-public class Blog {
+@Table
+public class Blog{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String title;
     private String content;
     private Date pubDate;
+
+    public Blog() {
+
+    }
+
+    //mapping with user
     @ManyToOne
     @JoinColumn
     private User user;
 
+    //mapping with image
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private List<Image> imageList= new ArrayList<>();
+    List<Image> imageList = new ArrayList<>();
 
-    public Blog() {
-    }
-
-    public Blog(String title,String content) {
+    public Blog(String title, String content) {
         this.title = title;
         this.content = content;
     }
