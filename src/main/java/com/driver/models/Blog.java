@@ -24,7 +24,7 @@ public class Blog {
     private User user;
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    private List<Image> imageList=new ArrayList<>();
+    private List<Image> imageList;
 
     public Blog() {
     }
