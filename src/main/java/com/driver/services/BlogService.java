@@ -23,11 +23,25 @@ public class BlogService {
 
     public Blog createAndReturnBlog(Integer userId, String title, String content) {
         //create a blog at the current time
+        Blog blog = new Blog();
+        User user = userRepository1.findById(userId).get();
+        blog.setUser(user);
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setPubDate(new Date());
+        blog.setImageList(new ArrayList<>());
+        //updating the blog details
+
+        //Updating the userInformation and changing its blogs
+        user.getBlogs().add(blog);
+        userRepository1.save(user);
+
+        return blog;
 
     }
 
     public void deleteBlog(int blogId){
         //delete blog and corresponding images
-
+        blogRepository1.deleteById(blogId);
     }
 }
