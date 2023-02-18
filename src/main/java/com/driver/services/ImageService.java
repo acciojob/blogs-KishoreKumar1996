@@ -15,52 +15,47 @@ public class ImageService {
     @Autowired
     ImageRepository imageRepository2;
 
-    public Image addImage(Integer blogId, String description, String dimensions){
+    public Image addImage(Integer blogId, String description, String dimensions) {
         //add an image to the blog
-        Image image = new Image();
+//        if(!blogRepository2.findById(blogId).isPresent()) {
+//            throw new Exception();
+//        }
         Blog blog = blogRepository2.findById(blogId).get();
-        image.setDescription(description);
-        image.setDimensions(dimensions);
-        image.setBlog(blog);
-        imageRepository2.save(image);
+        Image image = new Image(blog,description,dimensions);
+        blog.getImageList().add(image);
         blogRepository2.save(blog);
         return image;
+        //Here I am not explicitly adding image in image-repository because due to cascading effect
     }
 
     public void deleteImage(Integer id){
-        Image image=imageRepository2.findById(id).get();
-        imageRepository2.delete(image);
+        imageRepository2.deleteById(id);
     }
 
-    public int countImagesInScreen(Integer id, String screenDimensions) throws Exception {
+    public int countImagesInScreen(Integer id, String screenDimensions) {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
+        String [] scrarray = screenDimensions.split("X"); //A=Length   X    B=Breadth
+//        if(!imageRepository2.findById(id).isPresent()){
+//            throw new Exception();
+//        }
         Image image = imageRepository2.findById(id).get();
-        String dimensions = image.getDimensions();
 
-        int i = 0;
-        for(;i<screenDimensions.length();i++){
-            if(screenDimensions.charAt(i)=='X'){
-                break;
-            }
-        }
+        String imageDimensions = image.getDimensions();
+        String [] imgarray = imageDimensions.split("X");
 
-        int j = 0;
-        for(;j<dimensions.length();j++){
-            if(dimensions.charAt(j)=='X'){
-                break;
-            }
-        }
+        int scrl = Integer.parseInt(scrarray[0]); //A -- > integer
+        int scrb = Integer.parseInt(scrarray[1]); //B -- > integer
 
-        int lenBigImg = Integer.parseInt(screenDimensions.substring(0,i));
-        int widBigImg = Integer.parseInt(screenDimensions.substring(i+1));
-        int lenSmallImg = Integer.parseInt(dimensions.substring(0,j));
-        int widSmallImg = Integer.parseInt(dimensions.substring(j+1));
+        int imgl = Integer.parseInt(imgarray[0]); //A -- > integer
+        int imgb = Integer.parseInt(imgarray[1]); //B -- > integer
 
-        int dim1 = lenBigImg/lenSmallImg;
-        int dim2 = widBigImg/widSmallImg;
-
-        return dim1*dim2;
+        return no_Images(scrl,scrb,imgl,imgb);
 
     }
 
+    private int no_Images(int scrl, int scrb, int imgl, int imgb) {
+        int lenC = scrl/imgl; //
+        int lenB = scrb/imgb;
+        return lenC*lenB;
+    }
 }

@@ -3,36 +3,48 @@ package com.driver.models;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "Blog")
 public class Blog{
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private int id;
     private String title;
     private String content;
+
+    @CreationTimestamp
     private Date pubDate;
+
+    //Mapping
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Image> imageList;
 
     public Blog() {
 
     }
 
-    //mapping with user
-    @ManyToOne
-    @JoinColumn
-    private User user;
-
-    //mapping with image
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
-    List<Image> imageList = new ArrayList<>();
-
-    public Blog(String title, String content) {
+    public Blog(User user, String title, String content) {
         this.title = title;
         this.content = content;
+        this.user = user;
+    }
+
+    public Blog(int id, String title, String content, Date pubDate, User user, List<Image> imageList) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.pubDate = pubDate;
+        this.user = user;
+        this.imageList = imageList;
     }
 
     public int getId() {

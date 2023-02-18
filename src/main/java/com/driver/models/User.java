@@ -2,90 +2,88 @@ package com.driver.models;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table
-public class User {
+@Table(name="user")
+public class User{
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id;
-        private String userName;
-        @Column(unique = true)
-        private String password;
-        private String firstName;
-        private String lastName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String username;
+    private String password;
+    private String firstName = "test";
+    private String lastName = "test";
 
-        //mapping with blog
-        @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-        List<Blog> blogList = new ArrayList<>();
+    //Mapping
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JoinColumn
+    private List<Blog> blogList;
 
-        public User() {
+    public User() {
 
-        }
+    }
 
-        public User(String username, String password) {
-             userName = username;
-            this.password = password;
-            this.firstName = "test";
-            this.lastName = "test";
-        }
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public User(int id, String username, String password, String firstName, String lastName, List<Blog> blogList) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.blogList = blogList;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public String getUsername() {
-            return this.userName;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public void setUsername(String username) {
-            this.userName = username;
-        }
+    public String getUsername() {
+        return username;
+    }
 
-        public String getPassword() {
-            return password;
-        }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-        public void setPassword(String password) {
-            this.password = password;
-        }
+    public String getPassword() {
+        return password;
+    }
 
-        public String getFirstName() {
-            return firstName;
-        }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
+    public String getFirstName() {
+        return firstName;
+    }
 
-        public String getLastName() {
-            return lastName;
-        }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
+    public String getLastName() {
+        return lastName;
+    }
 
-        public String getUserName() {
-            return userName;
-        }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
+    public List<Blog> getBlogList() {
+        return blogList;
+    }
 
-        public List<Blog> getBlogList() {
-            return blogList;
-        }
-
-        public void setBlogList(List<Blog> blogList) {
-            this.blogList = blogList;
-        }
+    public void setBlogList(List<Blog> blogList) {
+        this.blogList = blogList;
+    }
 }

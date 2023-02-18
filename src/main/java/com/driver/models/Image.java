@@ -4,26 +4,32 @@ package com.driver.models;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "Image")
 public class Image{
-
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
     private String dimensions;
 
-    //mapping with blog
     @ManyToOne
     @JoinColumn
     private Blog blog;
 
     public Image() {
-
     }
 
-    public Image(String description, String dimensions) {
+    public Image(Blog blog, String description, String dimensions) {
         this.description = description;
         this.dimensions = dimensions;
+        this.blog = blog;
+    }
+
+    public Image(int id, String description, String dimensions, Blog blog) {
+        this.id = id;
+        this.description = description;
+        this.dimensions = dimensions;
+        this.blog = blog;
     }
 
     public int getId() {
